@@ -97,7 +97,7 @@ export default function Menu({ isDark, onThemeToggle }: MenuProps) {
       {/* Hamburger Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="relative w-10 h-10 flex flex-col justify-center items-center gap-1.5 focus:outline-none hover:bg-gray-100 dark:hover:bg-gray-900 rounded-lg transition-colors duration-200 p-1"
+        className="btn-icon-glass w-10 h-10 flex flex-col justify-center items-center gap-1.5 focus:outline-none p-1"
         aria-label="Toggle menu"
         aria-expanded={isOpen}
       >
