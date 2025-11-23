@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
@@ -11,6 +11,18 @@ export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
   const { login } = useAuth();
   const navigate = useNavigate();
+
+  const stars = useMemo(() => {
+    return Array.from({ length: 100 }, () => ({
+      width: Math.random() * 3 + 1,
+      height: Math.random() * 3 + 1,
+      left: Math.random() * 100,
+      top: Math.random() * 100,
+      opacity: Math.random() * 0.7 + 0.3,
+      duration: Math.random() * 3 + 2,
+      delay: Math.random() * 5,
+    }));
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -59,18 +71,18 @@ export default function Login() {
     >
       {/* Starfield Background */}
       <div className="absolute inset-0 overflow-hidden">
-        {[...Array(100)].map((_, i) => (
+        {stars.map((star, i) => (
           <div
             key={i}
             className="absolute rounded-full bg-white"
             style={{
-              width: Math.random() * 3 + 1 + "px",
-              height: Math.random() * 3 + 1 + "px",
-              left: Math.random() * 100 + "%",
-              top: Math.random() * 100 + "%",
-              opacity: Math.random() * 0.7 + 0.3,
-              animation: `shootingStar ${Math.random() * 3 + 2}s infinite`,
-              animationDelay: Math.random() * 5 + "s",
+              width: star.width + "px",
+              height: star.height + "px",
+              left: star.left + "%",
+              top: star.top + "%",
+              opacity: star.opacity,
+              animation: `shootingStar ${star.duration}s infinite`,
+              animationDelay: star.delay + "s",
             }}
           />
         ))}
@@ -354,6 +366,35 @@ export default function Login() {
         @keyframes spin {
           to {
             transform: rotate(360deg);
+          }
+        }
+
+        @keyframes blueWave {
+          0% {
+            background: linear-gradient(180deg, rgba(10, 132, 255, 0.05) 0%, rgba(10, 132, 255, 0.02) 50%, transparent 100%);
+          }
+          50% {
+            background: linear-gradient(180deg, rgba(10, 132, 255, 0.25) 0%, rgba(10, 132, 255, 0.1) 50%, transparent 100%);
+          }
+          100% {
+            background: linear-gradient(180deg, rgba(10, 132, 255, 0.05) 0%, rgba(10, 132, 255, 0.02) 50%, transparent 100%);
+          }
+        }
+
+        @keyframes shootingStar {
+          0% {
+            transform: translateY(0) translateX(0);
+            opacity: 0;
+          }
+          10% {
+            opacity: 1;
+          }
+          90% {
+            opacity: 1;
+          }
+          100% {
+            transform: translateY(100vh) translateX(100px);
+            opacity: 0;
           }
         }
       `}</style>
