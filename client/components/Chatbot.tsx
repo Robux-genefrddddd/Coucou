@@ -411,6 +411,12 @@ export default function Chatbot() {
           isLoading={isLoading}
         />
       </div>
+
+      {/* License Dialog */}
+      <LicenseDialog
+        isOpen={licenseDialogOpen}
+        onClose={() => setLicenseDialogOpen(false)}
+      />
     </div>
   );
 }
