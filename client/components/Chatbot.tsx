@@ -278,6 +278,19 @@ export default function Chatbot() {
               <Plus size={20} />
             </button>
 
+            {/* Settings Button */}
+            <button
+              onClick={() => navigate("/settings")}
+              className="p-2 rounded-lg transition-colors duration-200 hover:bg-white/10"
+              title="Settings"
+              style={{
+                backgroundColor: "#1A1A1A",
+                color: "#FFFFFF",
+              }}
+            >
+              <SettingsIcon size={20} />
+            </button>
+
             {/* User Profile Button */}
             <button
               className="p-2 rounded-lg transition-colors duration-200"
