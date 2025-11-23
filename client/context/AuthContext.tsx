@@ -43,6 +43,11 @@ interface AuthContextType {
   updatePlan: (plan: Plan) => Promise<void>;
   incrementMessageCount: () => Promise<void>;
   canSendMessage: () => boolean;
+  verifyLicense: () => Promise<LicenseVerificationResponse | null>;
+  activateLicense: (licenseKey: string) => Promise<void>;
+  warnings: Warning[];
+  alerts: SecurityAlert[];
+  maintenanceMode: boolean;
   error: string | null;
 }
 
