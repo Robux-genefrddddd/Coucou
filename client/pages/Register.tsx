@@ -77,24 +77,18 @@ export default function Register() {
           }}
         >
 
-          <div className="relative z-10">
+          <div>
             {/* Header */}
             <div className="mb-8 text-center">
               <h1
                 className="text-3xl font-bold mb-2"
-                style={{
-                  color: "#FFFFFF",
-                  animation: "fadeInDown 0.6s ease-out 0.1s both",
-                }}
+                style={{ color: "#1a1a1a" }}
               >
                 Créer mon compte
               </h1>
               <p
                 className="text-sm"
-                style={{
-                  color: "#888888",
-                  animation: "fadeInDown 0.6s ease-out 0.2s both",
-                }}
+                style={{ color: "#666666" }}
               >
                 Rejoignez-nous pour commencer
               </p>
