@@ -6,10 +6,6 @@ import {
   SecurityAlert,
 } from "@shared/api";
 import { validateLicense, isLicenseExpired, getDaysRemaining } from "../lib/licenseUtils";
-import { getFirestore, doc, getDoc, updateDoc, collection, query, where, getDocs } from "firebase/firestore";
-import app from "../lib/firebaseAdmin";
-
-const db = getFirestore(app);
 
 export const handleLicenseVerify: RequestHandler = async (req, res) => {
   try {
