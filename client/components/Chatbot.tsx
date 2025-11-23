@@ -228,20 +228,44 @@ export default function Chatbot() {
             borderColor: "#1A1A1A",
           }}
         >
-          {/* Left: Title */}
-          <div className="min-w-0">
-            <h1
-              className="text-xl sm:text-2xl font-bold truncate"
-              style={{ color: "#FFFFFF" }}
-            >
-              Chat
-            </h1>
+          {/* Left: Title and Counter */}
+          <div className="min-w-0 flex items-center gap-4">
+            <div>
+              <h1
+                className="text-xl sm:text-2xl font-bold truncate"
+                style={{ color: "#FFFFFF" }}
+              >
+                Chat
+              </h1>
+              {user?.plan === "Gratuit" && (
+                <p className="text-xs" style={{ color: "#999999" }}>
+                  Messages: {user?.messageCount || 0}/100
+                </p>
+              )}
+            </div>
           </div>
 
           {/* Right: Action Buttons */}
           <div className="flex items-center gap-2 flex-shrink-0">
-            {/* Quick Action Button */}
+            {/* Upgrade Button - Only for Free Plan */}
+            {user?.plan === "Gratuit" && (
+              <button
+                onClick={() => setLicenseDialogOpen(true)}
+                className="flex items-center gap-2 px-3 py-2 rounded-lg transition-colors duration-200"
+                title="Upgrade plan"
+                style={{
+                  backgroundColor: "#FF9500",
+                  color: "#FFFFFF",
+                }}
+              >
+                <Zap size={18} />
+                <span className="text-sm hidden sm:inline">Upgrade</span>
+              </button>
+            )}
+
+            {/* New Chat Button */}
             <button
+              onClick={handleNewConversation}
               className="p-2 rounded-lg transition-colors duration-200"
               title="New chat"
               style={{
