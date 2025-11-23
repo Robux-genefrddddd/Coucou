@@ -54,7 +54,7 @@ export default function InputArea({
               : "0 4px 20px rgba(0, 0, 0, 0.3)",
           }}
         >
-          <div className="flex items-end gap-3 px-4 py-3">
+          <div className="flex items-end gap-3 px-5 py-4">
             {/* Left Icons */}
             <div className="flex items-center gap-2 flex-shrink-0">
               <button
@@ -72,14 +72,6 @@ export default function InputArea({
               >
                 <Smile size={20} />
               </button>
-
-              <button
-                className="p-2 hover:bg-white/10 rounded-lg transition-colors duration-200 text-gray-400 hover:text-gray-300"
-                title="Voice message"
-                type="button"
-              >
-                <Mic size={20} />
-              </button>
             </div>
 
             {/* Textarea */}
@@ -91,7 +83,7 @@ export default function InputArea({
               onFocus={() => setIsFocused(true)}
               onBlur={() => setIsFocused(false)}
               placeholder="Type your message..."
-              className="flex-1 bg-transparent text-white placeholder-gray-600 focus:outline-none resize-none"
+              className="flex-1 bg-transparent text-white focus:outline-none resize-none text-center"
               style={{
                 color: "#EDEDED",
                 lineHeight: "1.5",
