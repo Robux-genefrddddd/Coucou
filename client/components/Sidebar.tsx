@@ -179,26 +179,37 @@ export default function Sidebar({
       </div>
 
       {/* Bottom Section - Plan Card */}
-      <div className="px-4 py-4 border-t border-gray-900">
+      <div
+        className="px-4 py-4 border-t"
+        style={{ borderColor: "#1A1A1A" }}
+      >
         <div
-          className="relative rounded-lg overflow-hidden p-3 border border-gray-800"
+          className="rounded-lg overflow-hidden p-3 text-center"
           style={{
             backgroundColor: "#111111",
+            border: "1px solid #1A1A1A",
             boxShadow: "0 0 12px rgba(255, 255, 255, 0.03)",
           }}
         >
-          {/* Content - Centered */}
-          <div className="text-center">
-            <span className="text-xs font-semibold text-gray-300">
-              Plan: Gratuit
-            </span>
-          </div>
+          <span
+            className="text-xs font-semibold"
+            style={{ color: "#FFFFFF" }}
+          >
+            Plan: {user?.plan || "Gratuit"}
+          </span>
         </div>
 
         {/* Logout Button */}
-        <button className="w-full mt-3 flex items-center gap-3 px-4 py-2.5 text-left text-red-500 hover:bg-red-500/10 rounded-lg transition-colors duration-200 text-sm">
+        <button
+          onClick={handleLogout}
+          className="w-full mt-3 flex items-center gap-3 px-4 py-2.5 text-left rounded-lg transition-colors duration-200 text-sm font-medium"
+          style={{
+            color: "#EF4444",
+            backgroundColor: "transparent",
+          }}
+        >
           <LogOut size={18} />
-          <span className="font-medium">Déconnexion</span>
+          <span>Déconnexion</span>
         </button>
       </div>
     </div>
