@@ -27,9 +27,13 @@ export default function Sidebar({
   const { user, logout } = useAuth();
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    logout();
-    navigate("/register");
+  const handleLogout = async () => {
+    try {
+      await logout();
+      navigate("/register");
+    } catch (err) {
+      console.error("Logout failed:", err);
+    }
   };
 
   const formatTimestamp = (date: Date): string => {
