@@ -4,8 +4,7 @@ import {
   LogOut,
   Trash2,
   Clock,
-  Zap,
-  ChevronRight,
+  User,
 } from "lucide-react";
 
 interface Conversation {
