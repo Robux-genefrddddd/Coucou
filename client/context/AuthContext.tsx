@@ -33,6 +33,8 @@ interface AuthContextType {
   login: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
   updatePlan: (plan: Plan) => Promise<void>;
+  incrementMessageCount: () => Promise<void>;
+  canSendMessage: () => boolean;
   error: string | null;
 }
 
