@@ -118,3 +118,51 @@
     white-space: pre;
   }
 }
+
+@layer components {
+  /* Glassmorphism Button */
+  .btn-glass {
+    @apply backdrop-blur-md bg-white/10 dark:bg-white/8 border border-white/20 dark:border-white/15 text-black dark:text-white rounded-lg transition-all duration-300 hover:bg-white/20 dark:hover:bg-white/15 hover:border-white/40 dark:hover:border-white/30 shadow-lg;
+  }
+
+  .btn-glass:active {
+    @apply bg-white/15 dark:bg-white/12 transform scale-95;
+  }
+
+  .btn-glass:disabled {
+    @apply opacity-50 cursor-not-allowed;
+  }
+
+  /* Soft Glow Button (Primary) */
+  .btn-glow {
+    @apply bg-black dark:bg-white text-white dark:text-black rounded-lg font-medium transition-all duration-300;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  }
+
+  .btn-glow:hover {
+    @apply transform -translate-y-0.5;
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 10px 25px rgba(0, 0, 0, 0.2);
+  }
+
+  .btn-glow:active {
+    @apply transform scale-95;
+  }
+
+  .btn-glow:disabled {
+    @apply opacity-50 cursor-not-allowed;
+  }
+
+  /* Icon Button with Glass */
+  .btn-icon-glass {
+    @apply p-2 backdrop-blur-md bg-white/10 dark:bg-white/8 border border-white/20 dark:border-white/15 rounded-lg transition-all duration-300 hover:bg-white/20 dark:hover:bg-white/15;
+  }
+
+  .btn-icon-glass:active {
+    @apply transform scale-90;
+  }
+
+  /* Glass Input Style */
+  .input-glass {
+    @apply backdrop-blur-sm bg-white/30 dark:bg-white/5 border border-white/20 dark:border-white/10 rounded-lg text-black dark:text-white placeholder-gray-600 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-white/40 dark:focus:ring-white/20 focus:border-transparent transition-all duration-300;
+  }
+}
