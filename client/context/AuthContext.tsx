@@ -1,4 +1,12 @@
 import { createContext, useState, useContext, ReactNode, useEffect } from "react";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+  onAuthStateChanged,
+} from "firebase/auth";
+import { auth, db } from "@/lib/firebase";
+import { doc, setDoc, getDoc } from "firebase/firestore";
 
 export type Plan = "Gratuit" | "Plus" | "Entreprise";
 
@@ -12,44 +20,166 @@ export interface User {
 interface AuthContextType {
   user: User | null;
   isAuthenticated: boolean;
-  register: (name: string, email: string, password: string) => void;
-  logout: () => void;
-  updatePlan: (plan: Plan) => void;
+  isLoading: boolean;
+  register: (name: string, email: string, password: string) => Promise<void>;
+  login: (email: string, password: string) => Promise<void>;
+  logout: () => Promise<void>;
+  updatePlan: (plan: Plan) => Promise<void>;
+  error: string | null;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const savedUser = localStorage.getItem("user");
-    if (savedUser) {
-      setUser(JSON.parse(savedUser));
-    }
+    // Listen to Firebase auth state changes
+    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+      try {
+        if (firebaseUser) {
+          // User is logged in - fetch their profile from Firestore
+          const userDoc = await getDoc(doc(db, "users", firebaseUser.uid));
+          if (userDoc.exists()) {
+            const userData = userDoc.data();
+            setUser({
+              id: firebaseUser.uid,
+              name: userData.name,
+              email: firebaseUser.email || "",
+              plan: userData.plan || "Gratuit",
+            });
+          } else {
+            // Fallback if user doc doesn't exist (shouldn't happen)
+            setUser({
+              id: firebaseUser.uid,
+              name: "",
+              email: firebaseUser.email || "",
+              plan: "Gratuit",
+            });
+          }
+        } else {
+          // User is logged out
+          setUser(null);
+        }
+      } catch (err) {
+        console.error("Error loading user:", err);
+        setError(err instanceof Error ? err.message : "Failed to load user");
+      } finally {
+        setIsLoading(false);
+      }
+    });
+
+    return unsubscribe;
   }, []);
 
-  const register = (name: string, email: string, password: string) => {
-    const newUser: User = {
-      id: Date.now().toString(),
-      name,
-      email,
-      plan: "Gratuit",
-    };
-    setUser(newUser);
-    localStorage.setItem("user", JSON.stringify(newUser));
+  const register = async (
+    name: string,
+    email: string,
+    password: string
+  ): Promise<void> => {
+    try {
+      setError(null);
+      setIsLoading(true);
+
+      // Create user in Firebase Auth
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const firebaseUser = userCredential.user;
+
+      // Create user document in Firestore
+      await setDoc(doc(db, "users", firebaseUser.uid), {
+        name,
+        email,
+        plan: "Gratuit",
+        createdAt: new Date().toISOString(),
+      });
+
+      // Set local user state (onAuthStateChanged will also trigger)
+      setUser({
+        id: firebaseUser.uid,
+        name,
+        email,
+        plan: "Gratuit",
+      });
+    } catch (err) {
+      const errorMsg =
+        err instanceof Error ? err.message : "Registration failed";
+      setError(errorMsg);
+      throw err;
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const logout = () => {
-    setUser(null);
-    localStorage.removeItem("user");
+  const login = async (email: string, password: string): Promise<void> => {
+    try {
+      setError(null);
+      setIsLoading(true);
+
+      // Sign in with Firebase Auth
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const firebaseUser = userCredential.user;
+
+      // Fetch user profile from Firestore
+      const userDoc = await getDoc(doc(db, "users", firebaseUser.uid));
+      if (userDoc.exists()) {
+        const userData = userDoc.data();
+        setUser({
+          id: firebaseUser.uid,
+          name: userData.name,
+          email: firebaseUser.email || "",
+          plan: userData.plan || "Gratuit",
+        });
+      }
+    } catch (err) {
+      const errorMsg = err instanceof Error ? err.message : "Login failed";
+      setError(errorMsg);
+      throw err;
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const updatePlan = (plan: Plan) => {
-    if (user) {
-      const updatedUser = { ...user, plan };
-      setUser(updatedUser);
-      localStorage.setItem("user", JSON.stringify(updatedUser));
+  const logout = async (): Promise<void> => {
+    try {
+      setError(null);
+      await signOut(auth);
+      setUser(null);
+    } catch (err) {
+      const errorMsg = err instanceof Error ? err.message : "Logout failed";
+      setError(errorMsg);
+      throw err;
+    }
+  };
+
+  const updatePlan = async (plan: Plan): Promise<void> => {
+    if (!user) return;
+
+    try {
+      setError(null);
+      // Update user plan in Firestore
+      await setDoc(
+        doc(db, "users", user.id),
+        { plan },
+        { merge: true }
+      );
+
+      // Update local state
+      setUser({ ...user, plan });
+    } catch (err) {
+      const errorMsg =
+        err instanceof Error ? err.message : "Failed to update plan";
+      setError(errorMsg);
+      throw err;
     }
   };
 
@@ -58,9 +188,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       value={{
         user,
         isAuthenticated: user !== null,
+        isLoading,
         register,
+        login,
         logout,
         updatePlan,
+        error,
       }}
     >
       {children}
