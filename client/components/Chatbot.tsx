@@ -190,10 +190,19 @@ export default function Chatbot() {
       {/* Main Chat Area */}
       <div className="flex flex-col flex-1 overflow-hidden">
         {/* Header */}
-        <div className="border-b border-gray-200 dark:border-gray-900 px-4 py-3 sm:px-6 md:px-8 bg-white dark:bg-black flex items-center justify-between gap-4">
+        <div
+          className="border-b px-4 py-3 sm:px-6 md:px-8 flex items-center justify-between gap-4"
+          style={{
+            backgroundColor: "#0A0A0A",
+            borderColor: "#1A1A1A",
+          }}
+        >
           {/* Left: Title */}
           <div className="min-w-0">
-            <h1 className="text-xl sm:text-2xl font-bold text-black dark:text-white truncate">
+            <h1
+              className="text-xl sm:text-2xl font-bold truncate"
+              style={{ color: "#FFFFFF" }}
+            >
               Chat
             </h1>
           </div>
@@ -201,13 +210,27 @@ export default function Chatbot() {
           {/* Right: Action Buttons */}
           <div className="flex items-center gap-2 flex-shrink-0">
             {/* Quick Action Button */}
-            <button className="btn-icon-glass" title="New chat">
-              <Plus size={20} className="text-black dark:text-white" />
+            <button
+              className="p-2 rounded-lg transition-colors duration-200"
+              title="New chat"
+              style={{
+                backgroundColor: "#1A1A1A",
+                color: "#FFFFFF",
+              }}
+            >
+              <Plus size={20} />
             </button>
 
             {/* User Profile Button */}
-            <button className="btn-icon-glass" title="User profile">
-              <User size={20} className="text-black dark:text-white" />
+            <button
+              className="p-2 rounded-lg transition-colors duration-200"
+              title="User profile"
+              style={{
+                backgroundColor: "#1A1A1A",
+                color: "#FFFFFF",
+              }}
+            >
+              <User size={20} />
             </button>
 
             {/* Hamburger Menu - Only on mobile */}
