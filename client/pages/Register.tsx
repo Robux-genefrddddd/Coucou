@@ -12,6 +12,8 @@ export default function Register() {
   });
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [captchaToken, setCaptchaToken] = useState("");
+  const captchaRef = useRef<any>(null);
   const { register } = useAuth();
   const navigate = useNavigate();
 
