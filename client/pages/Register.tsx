@@ -72,9 +72,6 @@ export default function Register() {
       const captchaVerification = await verifyCaptchaToken(captchaToken);
       if (!captchaVerification.success) {
         setError(captchaVerification.error || "Captcha verification failed");
-        if (captchaRef.current) {
-          captchaRef.current.reset();
-        }
         setCaptchaToken("");
         return;
       }
@@ -264,7 +261,7 @@ export default function Register() {
                   name="password"
                   value={formData.password}
                   onChange={handleChange}
-                  placeholder="Au moins 6 caract��res"
+                  placeholder="Au moins 6 caractères"
                   disabled={isLoading}
                   className="w-full px-4 py-3 rounded-lg border focus:outline-none transition-all duration-300"
                   style={{
